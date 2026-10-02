@@ -10,6 +10,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23131a2a'/%3E%3Cstop offset='100%25' stop-color='%23a3a6ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-weight='700' font-size='28' fill='%23f7f7ff' text-anchor='middle'%3ESG%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="engagement.css">
+  <link rel="preload" as="image" href="retro-wallpaper.jpg?v=3">
+  <link rel="stylesheet" href="retro-os.css?v=3">
 
   <style>
     /* ============================================
@@ -24,6 +27,13 @@
 
     html {
       scroll-behavior: smooth;
+      scrollbar-gutter: stable;
+      scrollbar-width: thin;
+      scrollbar-color: #5c6294 var(--frost);
+    }
+
+    [data-theme="dark"] html {
+      scrollbar-color: #7b83be #0e1220;
     }
 
     :root {
@@ -81,6 +91,37 @@
       --lilac-rgb:    26, 31, 53;
     }
 
+    /* ACCESSIBLE HIGH-CONTRAST SCROLLBAR (WCAG non-text contrast >= 3:1, min 12px width) */
+    ::-webkit-scrollbar {
+      width: 12px;
+      height: 12px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--frost);
+      border-left: 1px solid var(--border);
+    }
+
+    [data-theme="dark"] ::-webkit-scrollbar-track {
+      background: #0e1220;
+      border-left: 1px solid rgba(163, 166, 255, 0.12);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #5c6294;
+      border-radius: 6px;
+      border: 2px solid var(--frost);
+    }
+
+    [data-theme="dark"] ::-webkit-scrollbar-thumb {
+      background: #7b83be;
+      border: 2px solid #0e1220;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--periwinkle);
+    }
+
     body {
       font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--frost);
@@ -88,7 +129,7 @@
       overflow-x: hidden;
       line-height: 1.7;
       transition: background 0.5s ease, color 0.5s ease;
-      cursor: none;
+      cursor: auto;
     }
 
     h1, h2, h3 {
@@ -107,10 +148,62 @@
     a {
       text-decoration: none;
       color: inherit;
-      cursor: none;
+      cursor: pointer;
     }
 
-    button { cursor: none; }
+    button { 
+      cursor: pointer; 
+    }
+
+    /* SAFE MODE — FAST, ACCESSIBLE, PLAIN RENDERING */
+    [data-safe-mode="true"] {
+      scroll-behavior: auto !important;
+    }
+
+    [data-safe-mode="true"] #particles-canvas,
+    [data-safe-mode="true"] .cursor-dot,
+    [data-safe-mode="true"] .cursor-ring,
+    [data-safe-mode="true"] .retro-crt-overlay,
+    [data-safe-mode="true"] .glass-wheel {
+      display: none !important;
+    }
+
+    /* Guarantee that all profile elements, cards, hero components, and text stay 100% visible */
+    [data-safe-mode="true"] .hero-right,
+    [data-safe-mode="true"] .profile-container,
+    [data-safe-mode="true"] .profile-frame,
+    [data-safe-mode="true"] .profile-frame img,
+    [data-safe-mode="true"] .hero-card,
+    [data-safe-mode="true"] .status-badge,
+    [data-safe-mode="true"] .hero-content .greeting,
+    [data-safe-mode="true"] .hero-content h1,
+    [data-safe-mode="true"] .typing-wrapper,
+    [data-safe-mode="true"] .hero-content > p,
+    [data-safe-mode="true"] .hero-buttons,
+    [data-safe-mode="true"] .reveal,
+    [data-safe-mode="true"] .retro-window {
+      opacity: 1 !important;
+      visibility: visible !important;
+      animation: none !important;
+    }
+
+    /* Disable heavy keyframe animations and decorative transitions */
+    [data-safe-mode="true"] * {
+      animation: none !important;
+      transition: none !important;
+    }
+
+    /* Provide a clean, elegant border & unfiltered photo for profile frame in Safe Mode */
+    [data-safe-mode="true"] .profile-frame {
+      border-radius: 24px !important;
+      border: 3px solid var(--periwinkle) !important;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    [data-safe-mode="true"] .profile-frame img {
+      filter: none !important;
+      transform: none !important;
+    }
 
     section {
       padding: 100px 10%;
@@ -346,7 +439,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: none;
+      cursor: pointer;
       transition: all 0.3s ease;
       margin-left: 10px;
       position: relative;
@@ -369,7 +462,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: none;
+      cursor: pointer;
       transition: all 0.3s ease;
       margin-left: 8px;
     }
@@ -1415,7 +1508,7 @@
       opacity: 0;
       transform: translateY(20px);
       transition: all 0.4s ease;
-      cursor: none;
+      cursor: pointer;
       box-shadow: var(--shadow-md);
     }
 
@@ -1688,7 +1781,7 @@
     .menu-toggle {
       display: none;
       font-size: 1.4rem;
-      cursor: none;
+      cursor: pointer;
       color: var(--navy);
       background: none;
       border: none;
@@ -1814,10 +1907,34 @@
       <a href="#achievements" data-section="achievements">Achievements</a>
       <a href="#certifications" data-section="certifications">Certifications</a>
       <a href="#contact" data-section="contact">Contact</a>
-      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" data-tooltip="Toggle theme">
-        <span class="icon-sun">☀️</span>
-        <span class="icon-moon">🌙</span>
-      </button>
+      <div class="nav-actions-group">
+        <button class="nav-tool-btn" onclick="togglePalette(true)" aria-label="Search portfolio" data-tooltip="Search Portfolio (Ctrl+K or /)">
+          🔍 <span class="btn-label">Ask</span> <kbd>/</kbd>
+        </button>
+        <button class="nav-tool-btn" onclick="toggleTerminal(true)" aria-label="Open terminal" data-tooltip="Command Terminal (~)">
+          &gt;_ <span class="btn-label">Terminal</span> <kbd>~</kbd>
+        </button>
+        <button class="nav-tool-btn" id="safe-mode-btn" onclick="toggleSafeMode()" aria-label="Toggle Safe Mode" data-tooltip="Safe Mode (plain, fast, accessible)">
+          🛡️ <span class="btn-label">Safe</span>
+        </button>
+        <button class="nav-tool-btn" id="cursor-toggle-btn" onclick="toggleCursorSetting()" aria-label="Toggle Cursor Follower" data-tooltip="Toggle custom cursor follower">
+          🎯 <span class="btn-label">Cursor</span>
+        </button>
+        <button class="nav-tool-btn" id="sound-toggle-btn" aria-label="Toggle sound" data-tooltip="Toggle audio feedback">
+          🔇 OFF
+        </button>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" data-tooltip="Toggle light/dark">
+          <span class="icon-sun">☀️</span>
+          <span class="icon-moon">🌙</span>
+        </button>
+        <div class="theme-swatches" data-tooltip="Accent theme palette">
+          <button class="swatch-dot swatch-peri active" data-accent="peri" aria-label="Periwinkle theme"></button>
+          <button class="swatch-dot swatch-cyan" data-accent="cyan" aria-label="Cyan theme"></button>
+          <button class="swatch-dot swatch-emerald" data-accent="emerald" aria-label="Emerald theme"></button>
+          <button class="swatch-dot swatch-amber" data-accent="amber" aria-label="Amber theme"></button>
+          <button class="swatch-dot swatch-violet" data-accent="violet" aria-label="Violet theme"></button>
+        </div>
+      </div>
       <a href="https://www.instagram.com/siddharth.gupta_02?igsh=MW1tNzhnM2Z6eHFyag==" target="_blank" class="nav-social-link" aria-label="Visit Instagram" data-tooltip="Instagram">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
       </a>
@@ -1856,6 +1973,33 @@
           GitHub →
         </a>
       </div>
+
+      <!-- A. CHOOSE YOUR PATH INTERACTIVE ENTRY -->
+      <div class="path-selector-wrap">
+        <div class="path-header">
+          <div class="path-title">
+            <span class="pulse-dot"></span> Who's Exploring?
+          </div>
+          <button class="path-reset-btn" id="path-reset-btn" title="Reset to natural view">Reset View</button>
+        </div>
+        <div class="path-options">
+          <div class="path-card" data-path="recruiter">
+            <span class="path-badge">👔</span>
+            <div class="path-name">Recruiter</div>
+            <div class="path-desc">Prioritizes Dashboards, 3NF SQL, Analytics stack & Resume</div>
+          </div>
+          <div class="path-card" data-path="collaborator">
+            <span class="path-badge">🔬</span>
+            <div class="path-name">Collaborator</div>
+            <div class="path-desc">Highlights AI pipelines, Vibe-coded tools, GitHub & Research</div>
+          </div>
+          <div class="path-card active" data-path="curious">
+            <span class="path-badge">🚀</span>
+            <div class="path-name">Just Curious</div>
+            <div class="path-desc">Full cinematic exploration of all demos, projects & signals</div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="hero-right">
@@ -1883,6 +2027,26 @@
       </div>
     </div>
   </section>
+
+  <!-- VELOCITY MARQUEE TICKER -->
+  <div class="marquee-container" aria-hidden="true">
+    <div class="marquee-track">
+      <span class="marquee-item">AIRLINE FLIGHT RISK (517K+ ROWS) <span class="sep">•</span></span>
+      <span class="marquee-item">TUMOR X MRI (95% ACCURACY) <span class="sep">•</span></span>
+      <span class="marquee-item">INFOSYS EQUITY MODEL (14-SHEET DCF) <span class="sep">•</span></span>
+      <span class="marquee-item">INVOICEWISE 3.1.0 [VIBE-CODED ERP] <span class="sep">•</span></span>
+      <span class="marquee-item">VELLUM DESKTOP CLIENT [600+ AI MODELS] <span class="sep">•</span></span>
+      <span class="marquee-item">POWER BI & TABLEAU DAX <span class="sep">•</span></span>
+      <span class="marquee-item">POSTGRESQL 3NF ARCHITECTURE <span class="sep">•</span></span>
+      <span class="marquee-item">LANGCHAIN & GEMINI RAG <span class="sep">•</span></span>
+      <span class="marquee-item">IEEE PUBLISHED BLOOD DIAGNOSIS RESEARCH <span class="sep">•</span></span>
+      <span class="marquee-item">AIRLINE FLIGHT RISK (517K+ ROWS) <span class="sep">•</span></span>
+      <span class="marquee-item">TUMOR X MRI (95% ACCURACY) <span class="sep">•</span></span>
+      <span class="marquee-item">INFOSYS EQUITY MODEL (14-SHEET DCF) <span class="sep">•</span></span>
+      <span class="marquee-item">INVOICEWISE 3.1.0 [VIBE-CODED ERP] <span class="sep">•</span></span>
+      <span class="marquee-item">VELLUM DESKTOP CLIENT [600+ AI MODELS] <span class="sep">•</span></span>
+    </div>
+  </div>
 
 
 
@@ -2099,6 +2263,51 @@
         <a href="https://github.com/JustCallMeSidd/Vellum" target="_blank" class="project-link">View Project →</a>
       </div>
     </div>
+
+    <!-- PLAYFUL LIVE DEMOS (LABELLED HONESTLY) -->
+    <div class="lab-demos-container reveal">
+      <!-- DEMO 1: MINI TUMORNET VIEWER -->
+      <div class="lab-demo-card">
+        <div class="lab-demo-header">
+          <h3 class="lab-demo-title">🧠 Mini TumorNet Viewer</h3>
+          <span class="lab-demo-badge">Interactive Simulation</span>
+        </div>
+        <div class="honest-disclaimer">
+          ⚠️ Illustrative simulation, not real patient data or a diagnostic tool.
+        </div>
+        <div class="tumornet-canvas-wrap">
+          <canvas id="tumornet-demo-canvas" class="tumornet-canvas"></canvas>
+        </div>
+        <div class="tumornet-controls">
+          <div class="slider-label-row">
+            <span>Raw Scan</span>
+            <span id="tumornet-readout" style="color:var(--accent-color)">Slide to reveal AI boundary</span>
+            <span>Segmented</span>
+          </div>
+          <input type="range" min="0" max="100" value="0" class="tumornet-slider" id="tumornet-slider" aria-label="Reveal segmentation mask" />
+        </div>
+      </div>
+
+      <!-- DEMO 2: CANVAS AI NEURAL SKETCH PAD -->
+      <div class="lab-demo-card">
+        <div class="lab-demo-header">
+          <h3 class="lab-demo-title">🎨 Canvas AI Neural Sketch Pad</h3>
+          <span class="lab-demo-badge">In-Browser Filter</span>
+        </div>
+        <div class="honest-disclaimer">
+          ⚠️ Visual demo inspired by the GAN project, not the actual server model.
+        </div>
+        <div class="sketchpad-wrap">
+          <canvas id="sketchpad-demo-canvas" class="sketchpad-canvas"></canvas>
+        </div>
+        <div class="sketchpad-toolbar">
+          <button class="sketch-tool-btn" onclick="applySketchStyle('cyberpunk')">⚡ Cyberpunk Glow</button>
+          <button class="sketch-tool-btn" onclick="applySketchStyle('cubism')">🎭 Cubism Color</button>
+          <button class="sketch-tool-btn" onclick="applySketchStyle('invert')">🔮 Invert Matrix</button>
+          <button class="sketch-tool-btn" onclick="clearSketchCanvas()" style="margin-left:auto;">🧹 Clear</button>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- ============================================
@@ -2173,7 +2382,7 @@
        ============================================ -->
 
   <section id="skills">
-    <h2 class="section-title reveal">Skills</h2>
+    <h2 class="section-title reveal">Skills <span id="constellation-hidden-star" style="cursor:pointer; font-size:0.6em; opacity:0.3; transition:all 0.3s; vertical-align:middle;" title="A hidden constellation node..." onmouseover="this.style.opacity='1';this.style.color='var(--accent-color)'" onmouseout="this.style.opacity='0.3'">✦</span></h2>
 
     <div class="skills-grid stagger">
       <div class="skill-card reveal">
@@ -2501,6 +2710,7 @@
 
   <footer>
     2026 @siddharth gupta
+    <button onclick="toggleSafeMode()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:0.75rem; margin-left:14px; text-decoration:underline;">🛡️ Safe Mode</button>
   </footer>
 
   <!-- ============================================
@@ -2517,52 +2727,141 @@
        ============================================ -->
 
   <script>
+    // Ensure page always starts at the front page (top / hero)
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+    if (window.location.hash) {
+      try {
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      } catch(e) {}
+    }
+
     // ============================================
     // PRELOADER
     // ============================================
     window.addEventListener('load', () => {
+      window.scrollTo(0, 0);
       setTimeout(() => {
         document.getElementById('preloader').classList.add('hidden');
       }, 2200);
     });
 
     // ============================================
-    // CUSTOM CURSOR
+    // CUSTOM CURSOR FOLLOWER (ACCESSIBLE & NON-BLOCKING)
     // ============================================
     const cursorDot = document.getElementById('cursor-dot');
     const cursorRing = document.getElementById('cursor-ring');
-    let mouseX = 0, mouseY = 0;
-    let ringX = 0, ringY = 0;
+    let mouseX = -100, mouseY = -100;
+    let ringX = -100, ringY = -100;
+    let cursorEnabled = false; // native cursor is default
+    try {
+      cursorEnabled = localStorage.getItem('cursor_follower_enabled') === 'true';
+    } catch(e) {}
+
+    function updateCursorVisibility() {
+      const isFinePointer = window.matchMedia('(pointer: fine)').matches;
+      const safeMode = document.documentElement.getAttribute('data-safe-mode') === 'true';
+      const showFollower = cursorEnabled && isFinePointer && !safeMode;
+      if (cursorDot) cursorDot.style.display = showFollower ? 'block' : 'none';
+      if (cursorRing) cursorRing.style.display = showFollower ? 'block' : 'none';
+
+      const btn = document.getElementById('cursor-toggle-btn');
+      if (btn) btn.innerHTML = `🎯 <span class="btn-label">Cursor: ${cursorEnabled ? 'ON' : 'OFF'}</span>`;
+    }
+    updateCursorVisibility();
+
+    window.toggleCursorSetting = function(val) {
+      if (typeof val === 'boolean') {
+        cursorEnabled = val;
+      } else {
+        cursorEnabled = !cursorEnabled;
+      }
+      try { localStorage.setItem('cursor_follower_enabled', String(cursorEnabled)); } catch(e) {}
+      updateCursorVisibility();
+      if (typeof showToast === 'function') {
+        showToast(cursorEnabled ? '🎯 Custom cursor follower enabled' : '🎯 Custom cursor follower disabled');
+      }
+    };
 
     document.addEventListener('mousemove', (e) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
-      cursorDot.style.left = mouseX + 'px';
-      cursorDot.style.top = mouseY + 'px';
+
+      // Check if mouse is over native right-edge scrollbar track or left window
+      const isOverScrollbar = e.clientX >= document.documentElement.clientWidth;
+      const isOverInteractive = !!e.target.closest('input, textarea, select, button, a, .terminal-window, #retro-os-container');
+      const safeMode = document.documentElement.getAttribute('data-safe-mode') === 'true';
+
+      if (!cursorEnabled || isOverScrollbar || safeMode) {
+        if (cursorDot) cursorDot.style.opacity = '0';
+        if (cursorRing) cursorRing.style.opacity = '0';
+        return;
+      }
+
+      if (cursorDot) {
+        cursorDot.style.opacity = isOverInteractive ? '0.4' : '1';
+        cursorDot.style.left = mouseX + 'px';
+        cursorDot.style.top = mouseY + 'px';
+      }
+      if (cursorRing) {
+        cursorRing.style.opacity = isOverInteractive ? '0.3' : '1';
+      }
+    });
+
+    document.addEventListener('mouseleave', () => {
+      if (cursorDot) cursorDot.style.opacity = '0';
+      if (cursorRing) cursorRing.style.opacity = '0';
     });
 
     // Smooth follow for ring
     function animateCursorRing() {
-      ringX += (mouseX - ringX) * 0.15;
-      ringY += (mouseY - ringY) * 0.15;
-      cursorRing.style.left = ringX + 'px';
-      cursorRing.style.top = ringY + 'px';
+      ringX += (mouseX - ringX) * 0.18;
+      ringY += (mouseY - ringY) * 0.18;
+      if (cursorRing) {
+        cursorRing.style.left = ringX + 'px';
+        cursorRing.style.top = ringY + 'px';
+      }
       requestAnimationFrame(animateCursorRing);
     }
     animateCursorRing();
 
-    // Hover detection for interactive elements
-    const hoverTargets = document.querySelectorAll('a, button, .btn, .card, .project-card, .skill-card, .achievement, .cert-card, .cert-link, .profile-frame, .theme-toggle');
-    hoverTargets.forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        cursorDot.classList.add('hover');
-        cursorRing.classList.add('hover');
-      });
-      el.addEventListener('mouseleave', () => {
-        cursorDot.classList.remove('hover');
-        cursorRing.classList.remove('hover');
-      });
-    });
+    // ============================================
+    // SAFE MODE TOGGLE & PERSISTENCE
+    // ============================================
+    let isSafeMode = false;
+    try {
+      isSafeMode = localStorage.getItem('portfolio_safe_mode') === 'true';
+      if (isSafeMode) {
+        document.documentElement.setAttribute('data-safe-mode', 'true');
+      }
+    } catch(e) {}
+
+    window.toggleSafeMode = function(force) {
+      if (typeof force === 'boolean') {
+        isSafeMode = force;
+      } else {
+        isSafeMode = !isSafeMode;
+      }
+
+      if (isSafeMode) {
+        document.documentElement.setAttribute('data-safe-mode', 'true');
+        try { localStorage.setItem('portfolio_safe_mode', 'true'); } catch(e) {}
+        if (typeof showToast === 'function') {
+          showToast('🛡️ Safe Mode ON: Fast, accessible, plain layout');
+        }
+      } else {
+        document.documentElement.removeAttribute('data-safe-mode');
+        try { localStorage.setItem('portfolio_safe_mode', 'false'); } catch(e) {}
+        if (typeof showToast === 'function') {
+          showToast('🛡️ Safe Mode OFF: Enhanced interactive experience restored');
+        }
+      }
+      updateCursorVisibility();
+      const safeBtn = document.getElementById('safe-mode-btn');
+      if (safeBtn) safeBtn.innerHTML = `🛡️ <span class="btn-label">${isSafeMode ? 'Safe: ON' : 'Safe'}</span>`;
+    };
 
     // ============================================
     // SCROLL PROGRESS BAR
@@ -2846,6 +3145,7 @@
     for (let i = 0; i < 50; i++) {
       particles.push(new Particle());
     }
+    window.particles = particles;
 
     function drawLines() {
       for (let i = 0; i < particles.length; i++) {
@@ -2897,6 +3197,302 @@
       }
     });
   </script>
+
+  <!-- ============================================
+       FLOATING SIGNALS RADAR HUD
+       ============================================ -->
+  <div class="signals-hud" id="signals-hud" onclick="toggleSignalsModal(true)" aria-label="Open Signals Radar">
+    <svg class="hud-progress-svg" viewBox="0 0 36 36">
+      <path class="hud-ring-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+      <path class="hud-ring-val" id="signals-ring-val" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+    </svg>
+    <div class="hud-info">
+      <span class="hud-label">Signals</span>
+      <span class="hud-count" id="signals-count">0/12</span>
+    </div>
+  </div>
+
+  <!-- SIGNALS RADAR MODAL -->
+  <div class="signals-modal-backdrop" id="signals-modal-backdrop" onclick="if(event.target===this) toggleSignalsModal(false)">
+    <div class="signals-modal" role="dialog" aria-modal="true" aria-labelledby="radar-title">
+      <div class="signals-modal-header">
+        <h3 id="radar-title">📡 Signals Radar <span style="font-size:0.7em; color:var(--text-muted)">[Discovery Map]</span></h3>
+        <button class="terminal-close" onclick="toggleSignalsModal(false)" aria-label="Close modal">✕</button>
+      </div>
+      <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:16px;">
+        12 hidden telemetry signals are scattered across the portfolio. Uncover all 12 to unlock the <strong>"Behind the Build"</strong> engineering log.
+      </p>
+      <div class="signals-grid" id="signals-radar-grid">
+        <!-- Rendered by engagement.js -->
+      </div>
+      <button class="unlock-reward-btn" id="behind-build-unlock-btn" style="display:none;" onclick="document.getElementById('behind-build-panel').style.display='block'; this.style.display='none';">
+        🎉 12/12 Found! Read "Behind the Build"
+      </button>
+
+      <!-- BEHIND THE BUILD PANEL -->
+      <div id="behind-build-panel" style="display:none; margin-top:20px; border-top:1px solid var(--border); padding-top:16px;">
+        <h3 style="color:var(--navy); margin-bottom:10px;">🛠️ Behind the Build: Engineering & Decisions</h3>
+        <div class="behind-build-content">
+          <p>
+            Welcome to the lab archives! This portfolio was built with a strict philosophy: 
+            <strong>Zero heavy bloated frameworks, zero external tracking, instant 300ms feedback, and 100% accessible fallbacks.</strong>
+          </p>
+          <h4>The Core Stack:</h4>
+          <div class="tech-pills">
+            <span class="tech-pill">Semantic HTML5</span>
+            <span class="tech-pill">CSS Custom Properties (Live-Tinting)</span>
+            <span class="tech-pill">Modular ES6+ JavaScript</span>
+            <span class="tech-pill">HTML5 2D Canvas (Particles & MRI)</span>
+            <span class="tech-pill">Pure Web Audio API Synthesizer</span>
+            <span class="tech-pill">LocalStorage Telemetry</span>
+          </div>
+          <h4>What Broke & What I Learned:</h4>
+          <p>
+            1. <strong>Physics vs Framerate:</strong> Heavy particle physics drained mobile battery. I capped mobile particles to 50, throttled canvas redraws on blur, and connected automatic degradation if FPS dips below 45.<br>
+            2. <strong>Audio Ethics:</strong> Web Audio is powerful but obnoxious if forced. Kept sound 100% opt-in, synthesized procedurally without loading external MP3 files.<br>
+            3. <strong>Vibe Coding Reality:</strong> When building InvoiceWise and Vellum, orchestrating complex state machines without bloat taught me how to architect clean software contracts.
+          </p>
+          <p style="margin-top:12px; font-weight:600; color:var(--accent-color);">
+            — Siddharth Gupta (Bennett University '26)
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================
+       C. "ASK SIDDHARTH'S PORTFOLIO" SEARCH PALETTE
+       ============================================ -->
+  <div class="palette-backdrop" id="palette-backdrop" onclick="if(event.target===this) togglePalette(false)">
+    <div class="palette-box" role="dialog" aria-modal="true" aria-label="Search Portfolio">
+      <div class="palette-input-wrap">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="palette-input" class="palette-input" placeholder="Ask about SQL, projects, dashboards, resume, contact..." aria-label="Search prompt" />
+        <span class="palette-badge">Offline Search</span>
+        <button class="terminal-close" onclick="togglePalette(false)" aria-label="Close search">✕</button>
+      </div>
+      <div class="palette-results" id="palette-results">
+        <!-- Rendered by engagement.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================
+       F. GLOBAL COMMAND LINE TERMINAL
+       ============================================ -->
+  <div class="terminal-modal-backdrop" id="terminal-backdrop" onclick="if(event.target===this) toggleTerminal(false)">
+    <div class="terminal-window" role="dialog" aria-modal="true" aria-label="Command Terminal">
+      <div class="terminal-topbar">
+        <div class="terminal-dots">
+          <span class="t-dot t-dot-red" onclick="toggleTerminal(false)" style="cursor:pointer;" title="Close terminal"></span>
+          <span class="t-dot t-dot-yellow" onclick="toggleTerminal(false)" style="cursor:pointer;" title="Minimize terminal"></span>
+          <span class="t-dot t-dot-green" onclick="toggleSafeMode()" style="cursor:pointer;" title="Toggle Safe Mode"></span>
+        </div>
+        <div class="terminal-title">
+          <span>siddharth@portfolio: ~ (bash)</span>
+          <span class="hint">[Esc to close · Page scroll remains active]</span>
+        </div>
+        <div class="terminal-actions">
+          <button class="terminal-safe-btn" onclick="toggleSafeMode()" title="Toggle plain, fast Safe Mode">🛡️ Safe</button>
+          <button class="terminal-close" onclick="toggleTerminal(false)" aria-label="Minimize terminal" title="Minimize">_</button>
+          <button class="terminal-close" onclick="toggleTerminal(false)" aria-label="Close terminal" title="Close">✕</button>
+        </div>
+      </div>
+      <div class="terminal-body" id="terminal-body" onscroll="handleTerminalScroll(this)">
+        <div class="terminal-line t-prompt">Siddharth Gupta Terminal Interface [v3.4.0-lab]</div>
+        <div class="terminal-line t-out">Type <span style="color:var(--accent-color)">help</span> for commands, <span style="color:var(--accent-color)">fix</span> to recover, <span style="color:var(--accent-color)">safe</span> for Safe Mode, or <span style="color:var(--accent-color)">sudo hire</span>.</div>
+      </div>
+      <button class="terminal-jump-bottom" id="terminal-jump-btn" onclick="jumpTerminalBottom()">↓ Jump to bottom</button>
+      <div class="terminal-input-row">
+        <span class="t-prompt">guest@siddharth:~$</span>
+        <input type="text" id="terminal-input" class="terminal-input" autocomplete="off" spellcheck="false" aria-label="Terminal command input" />
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================
+       G. LAB MODE OVERLAY (KONAMI CODE)
+       ============================================ -->
+  <div class="lab-mode-overlay" id="lab-mode-overlay" aria-hidden="true">
+    <div class="lab-grid-lines"></div>
+    <div class="lab-hud-box">
+      <div>[LAB MODE // TELEMETRY ACTIVE]</div>
+      <div id="lab-fps">FPS: 60</div>
+      <div id="lab-coords">X:0 Y:0</div>
+      <div>PRESS ESC OR ENTER MATRIX IN TERMINAL</div>
+    </div>
+  </div>
+
+  <!-- IDLE HINT BANNER -->
+  <div class="idle-hint-banner" id="idle-hint-banner" role="status">
+    <span>💡 <em>Psst...</em> Try pressing <kbd style="background:rgba(var(--peri-rgb),0.2);padding:1px 5px;border-radius:3px;">~</kbd> for terminal, or click the logo dot!</span>
+    <button class="idle-hint-close" id="idle-hint-close" aria-label="Dismiss hint">✕</button>
+  </div>
+
+  <!-- ============================================
+       RETRO OS MODE: PERSISTENT FLOATING LAUNCHER
+       ============================================ -->
+  <button class="retro-os-boot-btn" id="boot-retro-os-btn" onclick="bootRetroOS()" aria-label="Boot Retro OS Mode" data-tooltip="Boot SiddharthOS v1.0 (Alt+R)">
+    <span class="os-flag-icon"></span> ⌘ Boot Retro OS
+  </button>
+
+  <!-- RETRO BIOS POST BOOT SCREEN -->
+  <div id="retro-boot-screen">
+    <div class="boot-logo-ascii">
+   _____ _____ _____  _____  _    _          _____ _______ _    _    ____   _____ 
+  / ____|_   _|  __ \\|  __ \\| |  | |   /\\   |  __ \\__   __| |  | |  / __ \\ / ____|
+ | (___   | | | |  | | |  | | |__| |  /  \\  | |__) | | |  | |__| | | |  | | (___  
+  \\___ \\  | | | |  | | |  | |  __  | / /\\ \\ |  _  /  | |  |  __  | | |  | |\\___ \\ 
+  ____) |_| |_| |__| | |__| | |  | |/ ____ \\| | \\ \\  | |  | |  | | | |__| |____) |
+ |_____/|_____|_____/|_____/|_|  |_/_/    \\_\\_|  \\_\\ |_|  |_|  |_|  \\____/|_____/ 
+    </div>
+    <div>SIDDHARTH_OS WORKSTATION KERNEL v1.0.4</div>
+    <div>(C) 2026 Siddharth Gupta. All rights reserved.</div>
+    <div>----------------------------------------------------------------------</div>
+    <div>CPU: Curiosity Overdrive x64 Processor @ 3.40 GHz</div>
+    <div>640K Base Memory Passed. 32768MB Extended Memory OK.</div>
+    <div>Detecting Primary Master: POSTGRESQL_3NF_DRIVE (517,492 Records)</div>
+    <div>Detecting Secondary Master: POWER_BI_DAX_CLUSTER (Ready)</div>
+    <div>Detecting Neural Co-Processor: TENSORFLOW_GRAD_CAM (OK)</div>
+    <div>Loading SIDDHARTH_OS Desktop GUI...</div>
+    <div class="boot-progress-bar">
+      <div class="boot-progress-fill" id="boot-progress-fill"></div>
+    </div>
+    <div class="boot-skip-hint">[Press any key or click to skip POST memory test]</div>
+  </div>
+
+  <!-- RETRO SHUT DOWN SCREEN -->
+  <div id="retro-shutdown-screen">
+    <div style="font-size:3.5rem; margin-bottom:12px;">💾</div>
+    <div>It is now safe to return to the modern web.</div>
+    <div style="font-size:1rem; color:#808080; margin-top:14px; font-weight:400;">Restoring modern interface state...</div>
+  </div>
+
+  <!-- RETRO OS DESKTOP CONTAINER -->
+  <div id="retro-os-container" data-wallpaper="bliss" role="region" aria-label="SiddharthOS Desktop" style="background-image: url('retro-wallpaper.jpg?v=3') !important; background-size: cover !important; background-position: center bottom !important; background-repeat: no-repeat !important; background-color: #245edb !important;">
+    <!-- CRT Overlay -->
+    <div class="retro-crt-overlay"></div>
+    <div class="retro-desktop-watermark">SiddharthOS</div>
+
+    <!-- Desktop Area -->
+    <div class="retro-desktop-area" id="retro-os-desktop">
+      <!-- Desktop Icons -->
+      <div class="retro-desktop-icon" data-app="profile" tabindex="0" role="button" aria-label="My Profile">
+        <div class="retro-icon-img">👤</div>
+        <div class="retro-icon-label">My Profile</div>
+      </div>
+
+      <div class="retro-desktop-icon" data-app="projects" tabindex="0" role="button" aria-label="Projects Explorer">
+        <div class="retro-icon-img">📁</div>
+        <div class="retro-icon-label">Projects</div>
+      </div>
+
+      <div class="retro-desktop-icon" data-app="dashboards" tabindex="0" role="button" aria-label="Dashboards NetNavigator">
+        <div class="retro-icon-img">📊</div>
+        <div class="retro-icon-label">Dashboards</div>
+      </div>
+
+      <div class="retro-desktop-icon" data-app="skills" tabindex="0" role="button" aria-label="Device & Skills Manager">
+        <div class="retro-icon-img">⚙️</div>
+        <div class="retro-icon-label">Skills</div>
+      </div>
+
+      <div class="retro-desktop-icon" data-app="lab" tabindex="0" role="button" aria-label="Lab Control Panel">
+        <div class="retro-icon-img">🧪</div>
+        <div class="retro-icon-label">Lab</div>
+      </div>
+
+      <div class="retro-desktop-icon" data-app="resume" tabindex="0" role="button" aria-label="Resume Document">
+        <div class="retro-icon-img">📄</div>
+        <div class="retro-icon-label">Resume.pdf</div>
+      </div>
+
+      <div class="retro-desktop-icon" data-app="contact" tabindex="0" role="button" aria-label="Contact Mail Client">
+        <div class="retro-icon-img">✉️</div>
+        <div class="retro-icon-label">Contact</div>
+      </div>
+
+      <div class="retro-desktop-icon" data-app="terminal" tabindex="0" role="button" aria-label="MS-DOS Command Prompt">
+        <div class="retro-icon-img">💻</div>
+        <div class="retro-icon-label">Terminal</div>
+      </div>
+
+      <div class="retro-desktop-icon" data-app="recycle" tabindex="0" role="button" aria-label="Recycle Bin">
+        <div class="retro-icon-img">🗑️</div>
+        <div class="retro-icon-label">Recycle Bin</div>
+      </div>
+
+      <div class="retro-desktop-icon" data-app="readme" tabindex="0" role="button" aria-label="Readme Notepad">
+        <div class="retro-icon-img">📝</div>
+        <div class="retro-icon-label">Readme.txt</div>
+      </div>
+
+      <div class="retro-desktop-icon" data-app="minesweeper" tabindex="0" role="button" aria-label="Minesweeper Game">
+        <div class="retro-icon-img">💣</div>
+        <div class="retro-icon-label">Minesweeper</div>
+      </div>
+    </div>
+
+    <!-- Retro Screensaver -->
+    <div id="retro-screensaver">
+      <div class="screensaver-text" id="screensaver-text">SIDDHARTH_OS</div>
+    </div>
+
+    <!-- Desktop Context Menu -->
+    <div class="retro-context-menu" id="retro-ctx-menu">
+      <div class="ctx-item" id="ctx-refresh">🔄 Refresh</div>
+      <div class="ctx-item" id="ctx-terminal">💻 Open Terminal</div>
+      <div class="ctx-item" id="ctx-wallpaper">🖼️ Change Wallpaper</div>
+      <div class="start-menu-divider"></div>
+      <div class="ctx-item" id="ctx-properties">⚙️ Properties</div>
+    </div>
+
+    <!-- Start Menu -->
+    <div class="retro-start-menu" id="retro-start-menu">
+      <div class="start-menu-sidebar">
+        <span class="start-sidebar-text">SiddharthOS</span>
+      </div>
+      <div class="start-menu-items">
+        <div class="start-menu-item" data-os-app="profile">👤 My Profile</div>
+        <div class="start-menu-item" data-os-app="projects">📁 Programs (Projects)</div>
+        <div class="start-menu-item" data-os-app="dashboards">📊 Dashboards</div>
+        <div class="start-menu-item" data-os-app="skills">⚙️ Skills Manager</div>
+        <div class="start-menu-item" data-os-app="lab">🧪 Lab Processes</div>
+        <div class="start-menu-item" data-os-app="minesweeper">💣 Minesweeper</div>
+        <div class="start-menu-divider"></div>
+        <div class="start-menu-item" data-os-app="resume">📄 Resume.pdf</div>
+        <div class="start-menu-item" data-os-app="readme">📝 Readme.txt</div>
+        <div class="start-menu-item" data-os-app="terminal">💻 Command Prompt</div>
+        <div class="start-menu-divider"></div>
+        <div class="start-menu-item" id="start-shutdown-btn">🚪 Shut Down...</div>
+      </div>
+    </div>
+
+    <!-- Retro Taskbar -->
+    <div class="retro-taskbar">
+      <button class="retro-start-btn" id="retro-start-btn" aria-label="Start Menu">
+        <span class="retro-start-logo"></span>
+        <span>Start</span>
+      </button>
+
+      <div class="retro-taskbar-tasks" id="retro-taskbar-tasks">
+        <!-- Rendered by retro-os.js -->
+      </div>
+
+      <div class="retro-tray">
+        <div class="retro-tray-item" id="retro-tray-crt" title="Toggle CRT scanlines">📺 CRT</div>
+        <div class="retro-tray-item" title="Coffee level">☕ 98%</div>
+        <div class="retro-tray-item" title="Signals Radar">📡 3/12</div>
+        <div class="retro-tray-item" id="retro-tray-clock">12:00 PM</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RETRO OS ENGINE SCRIPT -->
+  <script src="retro-os.js?v=3"></script>
+
+  <!-- ENGAGEMENT SCRIPT COMPANION -->
+  <script src="engagement.js?v=3"></script>
 
 </body>
 </html>
