@@ -233,7 +233,7 @@
       pointer-events: none;
       z-index: 9998;
       transform: translate(-50%, -50%);
-      transition: width 0.3s, height 0.3s, border-color 0.3s, background 0.3s;
+      transition: width 0.3s, height 0.3s, border-color 0.3s, background 0.3s, border-radius 0.3s;
     }
 
     .cursor-dot.hover {
@@ -244,10 +244,14 @@
     }
 
     .cursor-ring.hover {
-      width: 50px;
-      height: 50px;
-      border-color: var(--periwinkle);
-      background: rgba(163, 166, 255, 0.06);
+      width: 65px;
+      height: 65px;
+      border: 1.5px solid rgba(163, 166, 255, 0.3);
+      background: rgba(163, 166, 255, 0.08);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      box-shadow: 0 0 20px rgba(163, 166, 255, 0.15);
+      animation: morph 6s ease-in-out infinite;
     }
 
     /* ============================================
@@ -352,6 +356,28 @@
     .theme-toggle:hover {
       background: var(--lilac);
       transform: rotate(20deg);
+    }
+
+    /* Social media links in navbar */
+    .nav-social-link {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      border: 1px solid var(--border-solid);
+      background: var(--glass-bg);
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: none;
+      transition: all 0.3s ease;
+      margin-left: 8px;
+    }
+
+    .nav-social-link:hover {
+      background: var(--lilac);
+      color: var(--periwinkle);
+      transform: scale(1.08);
     }
 
     .theme-toggle .icon-sun,
@@ -602,15 +628,45 @@
       animation: heroFadeIn 0.8s 2.3s ease forwards;
     }
 
+    .profile-container {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .glass-wheel {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: rgba(var(--frost-rgb), 0.15);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(var(--peri-rgb), 0.2);
+      z-index: 1;
+      transform: translate(-50%, -50%);
+      animation: rotateWheel 25s linear infinite;
+      pointer-events: none;
+      box-shadow: var(--shadow-glow);
+    }
+
     .profile-frame {
-      width: 270px;
-      height: 330px;
-      border-radius: var(--radius-lg);
+      width: 260px;
+      height: 260px;
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
       overflow: hidden;
       position: relative;
-      box-shadow: var(--shadow-lg), var(--shadow-glow);
-      border: 2px solid var(--border-solid);
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      z-index: 2;
+      border: none;
+      box-shadow: none;
+      animation: morph 8s ease-in-out infinite;
+      transition: all 0.5s ease-in-out;
     }
 
     .profile-frame img {
@@ -618,26 +674,30 @@
       height: 100%;
       object-fit: cover;
       object-position: center top;
-      transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
-    }
-
-    .profile-frame:hover {
-      transform: translateY(-5px);
-      box-shadow: var(--shadow-lg), 0 0 50px rgba(var(--peri-rgb), 0.2);
+      filter: grayscale(100%);
+      transition: filter 0.6s ease, transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
     .profile-frame:hover img {
-      transform: scale(1.04);
+      filter: grayscale(0%);
+      transform: scale(1.06);
     }
 
-    .profile-frame::before {
-      content: '';
-      position: absolute;
-      inset: -3px;
-      border-radius: calc(var(--radius-lg) + 3px);
-      background: linear-gradient(135deg, var(--periwinkle), transparent, var(--lilac));
-      z-index: -1;
-      opacity: 0.5;
+    @keyframes rotateWheel {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to   { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    @keyframes morph {
+      0% {
+        border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+      }
+      50% {
+        border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+      }
+      100% {
+        border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+      }
     }
 
     /* Status indicator */
@@ -1498,6 +1558,108 @@
     }
 
     /* ============================================
+       DASHBOARDS SECTION
+       ============================================ */
+    .dashboards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
+    }
+
+    .dashboard-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius);
+      border: 1px solid var(--border-solid);
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .dashboard-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg), 0 0 30px rgba(var(--peri-rgb), 0.15);
+      border-color: rgba(var(--peri-rgb), 0.25);
+    }
+
+    .dashboard-preview {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      overflow: hidden;
+      display: block;
+    }
+
+    .dashboard-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .dashboard-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(var(--navy-rgb), 0.75);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .dashboard-overlay span {
+      color: #fff;
+      font-weight: 600;
+      font-size: 1.1rem;
+      letter-spacing: 0.05em;
+      padding: 10px 24px;
+      border: 1.5px solid #fff;
+      border-radius: var(--radius-pill);
+      transform: translateY(10px);
+      transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .dashboard-preview:hover img {
+      transform: scale(1.08);
+    }
+
+    .dashboard-preview:hover .dashboard-overlay {
+      opacity: 1;
+    }
+
+    .dashboard-preview:hover .dashboard-overlay span {
+      transform: translateY(0);
+    }
+
+    .dashboard-info {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .dashboard-info h3 {
+      font-size: 1.25rem;
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+
+    .dashboard-info p {
+      font-size: 0.9rem;
+      color: var(--text-body);
+      line-height: 1.6;
+      margin-bottom: 16px;
+      flex-grow: 1;
+    }
+
+    /* ============================================
        SCROLL REVEAL
        ============================================ */
 
@@ -1573,7 +1735,11 @@
         gap: 4px;
       }
 
-      .nav-links .theme-toggle { margin-left: 0; margin-top: 10px; }
+      .nav-links .theme-toggle,
+      .nav-links .nav-social-link {
+        margin-left: 0;
+        margin-top: 10px;
+      }
 
       .nav-links.active { right: 5%; }
 
@@ -1590,7 +1756,7 @@
       .section-title { font-size: 2rem; }
       .hero-card { padding: 22px; }
       .profile-frame { width: 180px; height: 220px; }
-
+      .dashboards-grid { grid-template-columns: 1fr; }
     }
 
     /* ============================================
@@ -1641,7 +1807,9 @@
     <div class="nav-links" id="nav-links">
       <a href="#about" data-section="about">About</a>
       <a href="#education" data-section="education">Education</a>
+      <a href="#experience" data-section="experience">Experience</a>
       <a href="#projects" data-section="projects">Projects</a>
+      <a href="#dashboards" data-section="dashboards">Dashboards</a>
       <a href="#skills" data-section="skills">Skills</a>
       <a href="#achievements" data-section="achievements">Achievements</a>
       <a href="#certifications" data-section="certifications">Certifications</a>
@@ -1650,6 +1818,9 @@
         <span class="icon-sun">☀️</span>
         <span class="icon-moon">🌙</span>
       </button>
+      <a href="https://www.instagram.com/siddharth.gupta_02?igsh=MW1tNzhnM2Z6eHFyag==" target="_blank" class="nav-social-link" aria-label="Visit Instagram" data-tooltip="Instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+      </a>
     </div>
   </nav>
 
@@ -1669,16 +1840,16 @@
       </div>
 
       <p>
-        B.Tech CSE (AI & ML) graduate from Bennett University with hands-on experience in
-        building AI-powered applications, deep learning systems, analytics dashboards,
-        and production-ready automation tools using modern technologies.
+        Data & Business Analyst with hands-on experience turning large, messy datasets (500K+ records) into
+        decision-ready dashboards and reports using SQL, Python, and Power BI/Tableau. Building AI-powered applications,
+        deep learning systems, and production-ready automation tools using modern technologies.
       </p>
 
       <div class="hero-buttons">
         <a href="mailto:justcallmesidd@gmail.com" class="btn btn-primary" id="hire-btn" data-tooltip="Send me an email">
           ✉ Hire Me
         </a>
-        <a href="https://drive.google.com/file/d/1I4F_HvMZFM3IGG8ITobfxj0z9rJyp39U/view?usp=sharing" target="_blank" class="btn btn-resume" id="resume-btn" data-tooltip="Download my resume">
+        <a href="https://drive.google.com/file/d/1eFMfCdBcfc_VusScIMsm_FOXJkPUBycH/view?usp=sharing" target="_blank" class="btn btn-resume" id="resume-btn" data-tooltip="Download my resume">
           📄 Resume
         </a>
         <a href="https://github.com/JustCallMeSidd" target="_blank" class="btn btn-outline" id="github-btn" data-tooltip="Visit my GitHub profile">
@@ -1688,8 +1859,11 @@
     </div>
 
     <div class="hero-right">
-      <div class="profile-frame">
-        <img src="profile.png" alt="Siddharth Gupta — AI/ML Engineer" />
+      <div class="profile-container">
+        <div class="glass-wheel"></div>
+        <div class="profile-frame">
+          <img src="profile.png" alt="Siddharth Gupta — AI/ML Engineer" />
+        </div>
       </div>
 
       <div class="status-badge">
@@ -1760,7 +1934,8 @@
       <div class="timeline-item">
         <h3>B.Tech in Computer Science & Engineering (AI & ML)</h3>
         <span>Bennett University | 2022 – 2026</span>
-        <p>CGPA: 8.40/10 · Graduated May 2026</p>
+        <p>CGPA: 8.48/10 · Graduated May 2026</p>
+        <a href="https://drive.google.com/file/d/15LR7GNUO-rJFcXAStzeaE8z-_WGOyP6t/view?usp=sharing" target="_blank" class="project-link" style="margin-top: 10px;" data-tooltip="View B.Tech Provisional Certificate">View Provisional Certificate →</a>
       </div>
 
       <div class="timeline-item">
@@ -1770,6 +1945,29 @@
           Completed intensive training in data analytics methodologies, visualization,
           business intelligence, and reporting workflows.
         </p>
+        <a href="https://drive.google.com/file/d/1JW5grXsItT_cwPP3JrXOCtAnB2qUgmEz/view?usp=drive_link" target="_blank" class="project-link" style="margin-top: 10px;" data-tooltip="View certificate">View Certificate →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       EXPERIENCE
+       ============================================ -->
+
+  <section id="experience">
+    <h2 class="section-title reveal">Experience</h2>
+
+    <div class="timeline reveal">
+      <div class="timeline-item">
+        <h3>Data Analytics Intern (Training Program)</h3>
+        <span>Apponix Academy | Feb 2026 – Jun 2026</span>
+        <p>
+          Analyzed business datasets in PostgreSQL using SQL to extract trends, writing joins, aggregations, and window functions across multi-table schemas.
+          Built interactive Power BI and Tableau dashboards with KPI cards, drill-downs, and DAX measures.
+          Cleaned and structured raw data in Excel and Python (Pandas), handling missing values, duplicates, and inconsistent formats.
+          Compiled findings into business reports and presentations summarizing key metrics and recommendations.
+        </p>
+        <a href="https://drive.google.com/file/d/1JW5grXsItT_cwPP3JrXOCtAnB2qUgmEz/view?usp=drive_link" target="_blank" class="project-link" style="margin-top: 10px;" data-tooltip="View certificate">View Certificate →</a>
       </div>
     </div>
   </section>
@@ -1784,22 +1982,24 @@
     <div class="projects-grid stagger">
       <div class="project-card reveal">
         <h3>Tumor X</h3>
-        <p>Deep learning pipeline for MRI scan analysis and segmentation with 95% accuracy.</p>
+        <p>Processed 4.5k+ MRI scans with data cleaning and transformation for model training. Developed a pipeline achieving 95% accuracy, with segmentation outputs for improved interpretability.</p>
         <div class="project-tags">
-          <span class="project-tag">Deep Learning</span>
-          <span class="project-tag">Medical AI</span>
-          <span class="project-tag">CNN</span>
+          <span class="project-tag">Python</span>
+          <span class="project-tag">TensorFlow</span>
+          <span class="project-tag">Streamlit</span>
+          <span class="project-tag">OpenCV</span>
         </div>
         <a href="https://github.com/JustCallMeSidd/Tumor-X.git" target="_blank" class="project-link">View Project →</a>
       </div>
 
       <div class="project-card reveal">
         <h3>Canvas AI</h3>
-        <p>GAN-powered AI app converting sketches into realistic art and applying artistic styles.</p>
+        <p>Two GAN-based models on a unified interface: one for converting hand-drawn sketches into realistic color images, another for applying artistic styles. Real-time Streamlit app handling 1k+ uploads with &lt;2s latency.</p>
         <div class="project-tags">
           <span class="project-tag">GAN</span>
-          <span class="project-tag">Computer Vision</span>
-          <span class="project-tag">Style Transfer</span>
+          <span class="project-tag">TensorFlow</span>
+          <span class="project-tag">Streamlit</span>
+          <span class="project-tag">PIL</span>
         </div>
         <a href="https://github.com/JustCallMeSidd/Canvas-Ai" target="_blank" class="project-link">View Project →</a>
       </div>
@@ -1817,32 +2017,152 @@
 
       <div class="project-card reveal">
         <h3>Cardio-Care</h3>
-        <p>Real-time healthcare image analysis system optimized with Docker and CVAT workflows.</p>
+        <p>Built models to transform and analyze image datasets, supporting real-time processing of 1,000+ inputs. Used CVAT for annotation and Docker for environment setup. Optimized pipelines to achieve &lt;2s latency.</p>
         <div class="project-tags">
+          <span class="project-tag">TensorFlow</span>
           <span class="project-tag">Docker</span>
-          <span class="project-tag">Healthcare</span>
           <span class="project-tag">CVAT</span>
+          <span class="project-tag">OpenCV</span>
         </div>
         <a href="https://github.com/JustCallMeSidd/Cardio-Care.git" target="_blank" class="project-link">View Project →</a>
       </div>
 
       <div class="project-card reveal">
-        <h3>Sales Insight Dashboard</h3>
-        <p>Interactive Power BI dashboard for tracking sales performance, KPIs, and customer insights.</p>
+        <h3>Water Stress & Heatwave Intelligence</h3>
+        <p>Scraped datasets from NITI Aayog and Indian Meteorological Department, performing SQL-based cleaning and consolidation. Designed interactive Power BI dashboards to visualize climate and policy insights for decision-making.</p>
         <div class="project-tags">
           <span class="project-tag">Power BI</span>
+          <span class="project-tag">SQL</span>
+          <span class="project-tag">Excel</span>
           <span class="project-tag">Analytics</span>
-          <span class="project-tag">KPI</span>
         </div>
+        <a href="https://github.com/JustCallMeSidd/Water-Stress-Groundwater-Rainfall-Heatwave-Intelligence" target="_blank" class="project-link">View Project →</a>
       </div>
 
       <div class="project-card reveal">
         <h3>Mental Health Survey Dashboard</h3>
-        <p>Real-time analytics dashboard visualizing survey trends and demographic insights.</p>
+        <p>Collected and analyzed mental health survey data across diverse demographics. Built an interactive dashboard with real-time visualizations for 1000+ survey records, enabling trend exploration and actionable insights.</p>
         <div class="project-tags">
-          <span class="project-tag">Data Viz</span>
-          <span class="project-tag">Survey</span>
-          <span class="project-tag">Real-Time</span>
+          <span class="project-tag">Python</span>
+          <span class="project-tag">Streamlit</span>
+          <span class="project-tag">Plotly</span>
+          <span class="project-tag">Pandas</span>
+        </div>
+        <a href="https://github.com/JustCallMeSidd/Mental-Health-Survey" target="_blank" class="project-link">View Project →</a>
+      </div>
+
+      <div class="project-card reveal">
+        <h3>Airline Flight Delay & Operations Risk</h3>
+        <p>Designed a 3NF PostgreSQL database and analyzed 517K+ flight records across 341 airports to surface delay patterns and operational risk factors. Built interactive Power BI dashboards with KPIs, route maps, and carrier-level analytics, enabling drill-down from network-wide trends to individual routes.</p>
+        <div class="project-tags">
+          <span class="project-tag">PostgreSQL</span>
+          <span class="project-tag">Python</span>
+          <span class="project-tag">Power BI</span>
+          <span class="project-tag">EDA</span>
+        </div>
+        <a href="https://github.com/JustCallMeSidd/Airline-Flight-Delay-and-Operations-Risk-Analysis" target="_blank" class="project-link">View Project →</a>
+      </div>
+
+      <div class="project-card reveal">
+        <h3>Infosys Equity Research Initiation</h3>
+        <p>Institutional-grade sell-side equity research package on Infosys (NSE: INFY) with a 14-sheet integrated financial model, DCF/WACC valuation, Monte Carlo simulation, peer benchmarking, and a 14-page initiation report prepared for J.P. Morgan Global Research.</p>
+        <div class="project-tags">
+          <span class="project-tag">Python</span>
+          <span class="project-tag">Excel</span>
+          <span class="project-tag">Financial Modeling</span>
+          <span class="project-tag">EDA</span>
+        </div>
+        <a href="https://github.com/JustCallMeSidd/Infosys-Equity-Research-Initiation-Project" target="_blank" class="project-link">View Project →</a>
+      </div>
+
+      <div class="project-card reveal">
+        <h3>InvoiceWise 3.1.0 <span style="font-size:0.7em; opacity:0.7;">[Vibe-Coded]</span></h3>
+        <p>Enterprise-grade standalone Windows desktop ERP for chemical/pharma manufacturers. Features BOM formula engineering, multi-batch traceability, multi-unit inventory, cryptographic audit ledgers, Rule 46 GST invoicing, and zero cloud dependencies.</p>
+        <div class="project-tags">
+          <span class="project-tag">Electron</span>
+          <span class="project-tag">Node.js</span>
+          <span class="project-tag">JavaScript</span>
+          <span class="project-tag">ERP</span>
+        </div>
+        <a href="https://github.com/JustCallMeSidd/InvoiceWise-3.1.0" target="_blank" class="project-link">View Project →</a>
+      </div>
+
+      <div class="project-card reveal">
+        <h3>Vellum — AI Desktop Client <span style="font-size:0.7em; opacity:0.7;">[Vibe-Coded]</span></h3>
+        <p>Premium open-source desktop AI chat app connecting to 600+ models via OpenRouter. Supports text, image vision, audio transcription, video analysis, TTS, and embeddings — all running natively on Windows with zero telemetry and local-only API key storage.</p>
+        <div class="project-tags">
+          <span class="project-tag">Electron</span>
+          <span class="project-tag">React</span>
+          <span class="project-tag">TypeScript</span>
+          <span class="project-tag">OpenRouter</span>
+        </div>
+        <a href="https://github.com/JustCallMeSidd/Vellum" target="_blank" class="project-link">View Project →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       DASHBOARDS
+       ============================================ -->
+
+  <section id="dashboards">
+    <h2 class="section-title reveal">Interactive Dashboards</h2>
+
+    <div class="dashboards-grid stagger">
+      <div class="dashboard-card reveal">
+        <a href="https://justcallmesidd.github.io/India-s-EV-vs-Fuel-dependency/" target="_blank" class="dashboard-preview">
+          <img src="ev_dashboard.png" alt="India Vehicle & EV Transition Intelligence Dashboard" />
+          <div class="dashboard-overlay">
+            <span>Open Dashboard ↗</span>
+          </div>
+        </a>
+        <div class="dashboard-info">
+          <h3>India Vehicle & EV Transition Intelligence</h3>
+          <p>Interactive EV registration and transition analytics dashboard mapping RTO-level registrations, market penetration curves, and fuel-type dependency analysis across India.</p>
+          <div class="project-tags">
+            <span class="project-tag">Power BI</span>
+            <span class="project-tag">Data Analytics</span>
+            <span class="project-tag">SQL</span>
+            <span class="project-tag">Market Intelligence</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-card reveal">
+        <a href="https://justcallmesidd.github.io/Global-Earthquake-dashboard/" target="_blank" class="dashboard-preview">
+          <img src="seismic_dashboard.png" alt="Seismic Risk Dashboard" />
+          <div class="dashboard-overlay">
+            <span>Open Dashboard ↗</span>
+          </div>
+        </a>
+        <div class="dashboard-info">
+          <h3>Seismic Risk Dashboard</h3>
+          <p>Seismic risk mapping and earthquake frequency analyzer presenting magnitude-depth relations, chronological event logs, and geographic risk distributions based on USGS data.</p>
+          <div class="project-tags">
+            <span class="project-tag">Power BI</span>
+            <span class="project-tag">Geographic GIS</span>
+            <span class="project-tag">Seismology</span>
+            <span class="project-tag">Trend Analysis</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-card reveal">
+        <a href="https://justcallmesidd.github.io/Airline-Flight-Delay-Operations-Risk-Analysis/" target="_blank" class="dashboard-preview">
+          <img src="flight_dashboard.png" alt="Airline Flight Delay & Operations Risk Analysis Dashboard" />
+          <div class="dashboard-overlay">
+            <span>Open Dashboard ↗</span>
+          </div>
+        </a>
+        <div class="dashboard-info">
+          <h3>Airline Flight Delay & Operations Risk</h3>
+          <p>Operations risk dashboard presenting airline business intelligence analytics, flight volume trends, delay cause modeling, and predictive flight delay metrics.</p>
+          <div class="project-tags">
+            <span class="project-tag">Power BI</span>
+            <span class="project-tag">Operations Risk</span>
+            <span class="project-tag">Predictive Analytics</span>
+            <span class="project-tag">Business Intelligence</span>
+          </div>
         </div>
       </div>
     </div>
@@ -1865,6 +2185,10 @@
         <div class="skill-item">
           <div class="skill-item-header"><span class="skill-item-name">C++</span><span class="skill-item-level">Intermediate</span></div>
           <div class="skill-bar"><div class="skill-bar-fill" data-width="70"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-item-header"><span class="skill-item-name">R</span><span class="skill-item-level">Intermediate</span></div>
+          <div class="skill-bar"><div class="skill-bar-fill" data-width="65"></div></div>
         </div>
         <div class="skill-item">
           <div class="skill-item-header"><span class="skill-item-name">SQL</span><span class="skill-item-level">Advanced</span></div>
@@ -1911,8 +2235,8 @@
           <div class="skill-bar"><div class="skill-bar-fill" data-width="88"></div></div>
         </div>
         <div class="skill-item">
-          <div class="skill-item-header"><span class="skill-item-name">Pandas</span><span class="skill-item-level">Advanced</span></div>
-          <div class="skill-bar"><div class="skill-bar-fill" data-width="92"></div></div>
+          <div class="skill-item-header"><span class="skill-item-name">Matplotlib / Seaborn</span><span class="skill-item-level">Advanced</span></div>
+          <div class="skill-bar"><div class="skill-bar-fill" data-width="85"></div></div>
         </div>
       </div>
 
@@ -1971,8 +2295,12 @@
           <div class="skill-bar"><div class="skill-bar-fill" data-width="70"></div></div>
         </div>
         <div class="skill-item">
-          <div class="skill-item-header"><span class="skill-item-name">n8n Automation</span><span class="skill-item-level">Intermediate</span></div>
+          <div class="skill-item-header"><span class="skill-item-name">AWS (EC2)</span><span class="skill-item-level">Intermediate</span></div>
           <div class="skill-bar"><div class="skill-bar-fill" data-width="65"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-item-header"><span class="skill-item-name">Jupyter Notebook</span><span class="skill-item-level">Advanced</span></div>
+          <div class="skill-bar"><div class="skill-bar-fill" data-width="92"></div></div>
         </div>
       </div>
     </div>
@@ -1988,11 +2316,13 @@
     <div class="achievements-list stagger">
       <div class="achievement reveal">
         <h3>IEEE Published Research</h3>
-        <p>Published research paper titled "Integrating Deep Learning Concepts with Blood Diagnosis" at IEEE CISES 2025.</p>
+        <p>Published "Integrating Deep Learning Concepts with Blood Diagnosis" — a novel framework transforming structured blood test data into image-like tensors for CNN-based hematological classification.</p>
+        <a href="https://ieeexplore.ieee.org/document/11265644" target="_blank" class="project-link" style="margin-top:12px" data-tooltip="Read on IEEE Xplore">Read Paper →</a>
       </div>
       <div class="achievement reveal">
-        <h3>Cognify AI Extension</h3>
-        <p>Developed and deployed a production-ready Microsoft Edge AI extension integrating LLM APIs.</p>
+        <h3>Cognify AI — Live Extension</h3>
+        <p>Production-ready Microsoft Edge AI extension providing real-time chat, image analysis, and PDF export for seamless workflow integration.</p>
+        <a href="https://microsoftedge.microsoft.com/addons/detail/cognify-ai/hekmbonjdkdomcodihfmaoakielfbbne" target="_blank" class="project-link" style="margin-top:12px" data-tooltip="View on Edge Add-ons Store">Try Extension →</a>
       </div>
       <div class="achievement reveal">
         <h3>Oracle OCI AI Certified</h3>
@@ -2018,15 +2348,32 @@
           <div class="cert-badge">☁️</div>
           <div class="cert-info">
             <h3>Oracle OCI AI Foundations Associate</h3>
-            <span class="cert-issuer">Oracle Cloud Infrastructure</span>
+            <span class="cert-issuer">Oracle University</span>
           </div>
         </div>
         <p class="cert-description">
           Certified in AI/ML fundamentals on Oracle Cloud Infrastructure, covering deep learning,
-          machine learning, NLP, computer vision, and responsible AI concepts on OCI platform.
+          machine learning, NLP, computer vision, and responsible AI concepts.
         </p>
         <div class="cert-footer">
-          <span class="cert-date">2025</span>
+          <span class="cert-date">Sept 2025</span>
+        </div>
+      </div>
+
+      <div class="cert-card reveal">
+        <div class="cert-header">
+          <div class="cert-badge">🧠</div>
+          <div class="cert-info">
+            <h3>Deep Learning A-Z: Neural Networks, AI & ChatGPT Prize</h3>
+            <span class="cert-issuer">Udemy</span>
+          </div>
+        </div>
+        <p class="cert-description">
+          Comprehensive deep learning course covering neural network architectures, CNNs, RNNs,
+          GANs, reinforcement learning, and modern AI techniques.
+        </p>
+        <div class="cert-footer">
+          <span class="cert-date">2024</span>
         </div>
       </div>
 
@@ -2034,12 +2381,63 @@
         <div class="cert-header">
           <div class="cert-badge">📊</div>
           <div class="cert-info">
+            <h3>Data Analysis for Machine Learning</h3>
+            <span class="cert-issuer">IBM · Coursera</span>
+          </div>
+        </div>
+        <p class="cert-description">
+          IBM-certified training in data analysis techniques for machine learning workflows,
+          including data preprocessing, feature engineering, and model evaluation.
+        </p>
+        <div class="cert-footer">
+          <span class="cert-date">2024</span>
+        </div>
+      </div>
+
+      <div class="cert-card reveal">
+        <div class="cert-header">
+          <div class="cert-badge">⚙️</div>
+          <div class="cert-info">
+            <h3>Improving Deep Neural Networks</h3>
+            <span class="cert-issuer">DeepLearning.AI</span>
+          </div>
+        </div>
+        <p class="cert-description">
+          Hyperparameter tuning, regularization, and optimization techniques for building
+          high-performance deep neural networks.
+        </p>
+        <div class="cert-footer">
+          <span class="cert-date">2024</span>
+        </div>
+      </div>
+
+      <div class="cert-card reveal">
+        <div class="cert-header">
+          <div class="cert-badge">💬</div>
+          <div class="cert-info">
+            <h3>NLP with Classification & Vector Spaces</h3>
+            <span class="cert-issuer">DeepLearning.AI</span>
+          </div>
+        </div>
+        <p class="cert-description">
+          Natural language processing fundamentals including sentiment analysis, text classification,
+          vector space models, and machine translation.
+        </p>
+        <div class="cert-footer">
+          <span class="cert-date">2024</span>
+        </div>
+      </div>
+
+      <div class="cert-card reveal">
+        <div class="cert-header">
+          <div class="cert-badge">📈</div>
+          <div class="cert-info">
             <h3>Data Analytics Professional</h3>
             <span class="cert-issuer">Apponix Academy</span>
           </div>
         </div>
         <p class="cert-description">
-          Completed intensive training in data analytics methodologies, business intelligence tools,
+          Intensive training in data analytics methodologies, business intelligence tools,
           data visualization with Power BI & Tableau, and professional reporting workflows.
         </p>
         <div class="cert-footer">
@@ -2068,7 +2466,7 @@
         <a href="tel:+918318983400" class="tooltip-trigger" data-tooltip="Click to call">
           <span class="link-icon">📞</span> +91 8318983400
         </a>
-        <a href="http://linkedin.com/in/justcallmesidd/" target="_blank" class="tooltip-trigger" data-tooltip="Open LinkedIn profile">
+        <a href="https://linkedin.com/in/justcallmesidd/" target="_blank" class="tooltip-trigger" data-tooltip="Open LinkedIn profile">
           <span class="link-icon">🔗</span> LinkedIn
         </a>
         <a href="https://github.com/JustCallMeSidd" target="_blank" class="tooltip-trigger" data-tooltip="Open GitHub profile">
@@ -2076,6 +2474,9 @@
         </a>
         <a href="https://leetcode.com/u/SagedWithSid/" target="_blank" class="tooltip-trigger" data-tooltip="View LeetCode profile">
           <span class="link-icon">🧠</span> LeetCode
+        </a>
+        <a href="https://www.instagram.com/siddharth.gupta_02?igsh=MW1tNzhnM2Z6eHFyag==" target="_blank" class="tooltip-trigger" data-tooltip="Open Instagram profile">
+          <span class="link-icon">📸</span> Instagram
         </a>
         <a href="https://www.fiverr.com/s/m54YDRb" target="_blank" class="tooltip-trigger" data-tooltip="Hire me on Fiverr">
           <span class="link-icon">🎯</span> Fiverr
@@ -2099,7 +2500,7 @@
        ============================================ -->
 
   <footer>
-    © 2026 <span>Siddharth Gupta</span>
+    2026 @siddharth gupta
   </footer>
 
   <!-- ============================================
